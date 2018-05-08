@@ -21,6 +21,11 @@ a.topic:hover {
     text-decoration: none;
 }
 
+/* nnngu */
+.topic_span {
+    float: right;
+}
+
 .button.is-naked {
     background: 0 0;
     border: none;
@@ -69,4 +74,9 @@ a.topic:hover {
 
 .notifications.unread {
     background: #fff9ea;
+}
+
+/* 新添加的 */
+.card-body img {
+    width: 100%;
 }

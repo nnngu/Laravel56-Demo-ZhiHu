@@ -7,23 +7,24 @@
                 <div class="card">
                     <div class="card-header">
                         {{ $title }}
+                        <span class="topic_span">
                         @foreach($topics as $topic)
                             <a class="topic" href="/topic/{{ $topic['id'] }}">{{ $topic['name'] }}</a>
                         @endforeach
+                        </span>
                     </div>
 
                     <div class="card-body">
                         {!! $body !!}
                     </div>
+                    <div class="actions">
+                        @if(Auth::check() && Auth::user()->ownByQuestion($user_id))
+                            <span class="edit"><a href="/questions/{{ $id }}/edit">编辑</a></span>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <style>
-        .card-body img {
-            width: 100%;
-        }
-    </style>
 @endsection
 
