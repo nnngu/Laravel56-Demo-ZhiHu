@@ -41,8 +41,9 @@ a.topic:hover {
     margin-left: 20px;
 }
 .delete-button {
-    color: #3097D1;
+    color: #007bff;
     text-decoration: none;
+    cursor: pointer;
 }
 .question-follow {
     text-align: center;
@@ -77,6 +78,16 @@ a.topic:hover {
 }
 
 /* 新添加的 */
-.card-body img {
+.card-body .question-body img {
     width: 100%;
+}
+.media-body {
+    margin: 10px 0 0 15px;
+}
+.avatar_img {
+    vertical-align: top;
+    background: #fff;
+    border-radius: 2px;
+    width: 30px;
+    height: 30px;
 }

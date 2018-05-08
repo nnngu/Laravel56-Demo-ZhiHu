@@ -18,9 +18,9 @@ class QuestionRepository
      * @param $id
      * @return mixed
      */
-    public function byIdWithTopics($id)
+    public function byIdWithTopicsAndAnswers($id)
     {
-        return Question::where('id', $id)->with('topics')->first();
+        return Question::where('id', $id)->with(['topics', 'answers'])->first();
     }
 
     public function create(array $attributes)
@@ -43,5 +43,10 @@ class QuestionRepository
     public function byId($id)
     {
         return Question::find($id);
+    }
+
+    public function getQuestionsFeed()
+    {
+        return Question::published()->latest('updated_at')->with('user')->get();
     }
 }

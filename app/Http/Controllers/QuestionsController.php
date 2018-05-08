@@ -28,7 +28,9 @@ class QuestionsController extends Controller
      */
     public function index()
     {
-        return 'index';
+        $questions = $this->questionRepository->getQuestionsFeed();
+//        dd(compact('questions'));
+        return view('questions.index', compact('questions'));
     }
 
     /**
@@ -68,10 +70,15 @@ class QuestionsController extends Controller
      */
     public function show($id)
     {
-        $question = $this->questionRepository->byIdWithTopics($id);
+        $question = $this->questionRepository->byIdWithTopicsAndAnswers($id);
 //        dd($question->toArray());
 //        dd(json_decode($question, true));
-        return view('questions.show', $question->toArray());
+//        dd($question);
+
+//        print_r($question);
+//        die;
+
+        return view('questions.show', compact('question'));
     }
 
     /**
@@ -120,7 +127,14 @@ class QuestionsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $question = $this->questionRepository->byId($id);
+
+        if(Auth::user()->owns($question)) {
+            $question->delete();
+            return redirect('/');
+        }
+
+        abort(403, 'Forbidden'); // return back();
     }
 
 

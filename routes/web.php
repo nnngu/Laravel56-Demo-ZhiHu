@@ -15,9 +15,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'QuestionsController@index');
 
 // 留言板的路由
 //Route::get('/', 'SignaturesController@index')->name('home');
@@ -36,3 +34,5 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('email/verify/{token}', ['as' => 'email.verify', 'uses' => 'EmailController@verify']);
 
 Route::resource('questions', 'QuestionsController');
+
+Route::post('questions/{question}/answer', 'AnswersController@store');
