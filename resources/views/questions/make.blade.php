@@ -31,7 +31,6 @@
                                 @endif
 
                                 @include('questions.select2')
-{{--<my-select></my-select>--}}
                                 <br>
 
                                 <label for="body">描述</label>
