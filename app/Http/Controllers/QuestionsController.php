@@ -3,16 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreQuestionRequest;
-use App\Question;
-use App\Topic;
+use App\Repositories\QuestionRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class QuestionsController extends Controller
 {
-    public function __construct()
+    protected $questionRepository;
+
+    /**
+     * QuestionsController constructor.
+     * @param QuestionRepository $questionRepository
+     */
+    public function __construct(QuestionRepository $questionRepository)
     {
         $this->middleware('auth')->except(['index', 'show']);
+        $this->questionRepository = $questionRepository;
     }
 
     /**
@@ -43,13 +49,13 @@ class QuestionsController extends Controller
      */
     public function store(StoreQuestionRequest $request)
     {
-        $topics = $this->normailzeTopic($request->get('topics'));
+        $topics = $this->questionRepository->normailzeTopic($request->get('topics'));
         $data = [
             'title' => $request->get('title'),
             'body' => $request->get('body'),
             'user_id' => Auth::id(),
         ];
-        $question = Question::create($data);
+        $question = $this->questionRepository->create($data);
         $question->topics()->attach($topics);
         return redirect()->route('questions.show', [$question->id]);
     }
@@ -62,7 +68,7 @@ class QuestionsController extends Controller
      */
     public function show($id)
     {
-        $question = Question::where('id', $id)->with('topics')->first();
+        $question = $this->questionRepository->byIdWithTopics($id);
 //        dd($question->toArray());
 //        dd(json_decode($question, true));
         return view('questions.show', $question->toArray());
@@ -102,15 +108,5 @@ class QuestionsController extends Controller
         //
     }
 
-    private function normailzeTopic(array $topics)
-    {
-        return collect($topics)->map(function ($topic) {
-            if(is_numeric($topic)) {
-                Topic::find($topic)->increment('questions_count');
-                return (int)$topic;
-            }
-            $newTopic = Topic::create(['name' => $topic, 'questions_count' => 1]);
-            return $newTopic->id;
-        })->toArray();
-    }
+
 }

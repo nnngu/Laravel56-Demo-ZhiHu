@@ -8,7 +8,7 @@
                     <div class="card-header">
                         {{ $title }}
                         @foreach($topics as $topic)
-                            <span class="topic">{{ $topic['name'] }}</span>
+                            <a class="topic" href="/topic/{{ $topic['id'] }}">{{ $topic['name'] }}</a>
                         @endforeach
                     </div>
 
