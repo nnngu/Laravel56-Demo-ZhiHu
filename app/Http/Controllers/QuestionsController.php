@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreQuestionRequest;
 use App\Question;
+use App\Topic;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -42,13 +43,14 @@ class QuestionsController extends Controller
      */
     public function store(StoreQuestionRequest $request)
     {
-        dd($request->get('topics'));
+        $topics = $this->normailzeTopic($request->get('topics'));
         $data = [
             'title' => $request->get('title'),
             'body' => $request->get('body'),
             'user_id' => Auth::id(),
         ];
         $question = Question::create($data);
+        $question->topics()->attach($topics);
         return redirect()->route('questions.show', [$question->id]);
     }
 
@@ -60,8 +62,10 @@ class QuestionsController extends Controller
      */
     public function show($id)
     {
-        $question = Question::find($id);
-        return view('questions.show', json_decode($question, true));
+        $question = Question::where('id', $id)->with('topics')->first();
+//        dd($question->toArray());
+//        dd(json_decode($question, true));
+        return view('questions.show', $question->toArray());
     }
 
     /**
@@ -96,5 +100,17 @@ class QuestionsController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    private function normailzeTopic(array $topics)
+    {
+        return collect($topics)->map(function ($topic) {
+            if(is_numeric($topic)) {
+                Topic::find($topic)->increment('questions_count');
+                return (int)$topic;
+            }
+            $newTopic = Topic::create(['name' => $topic, 'questions_count' => 1]);
+            return $newTopic->id;
+        })->toArray();
     }
 }
