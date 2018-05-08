@@ -88,8 +88,6 @@
 
 @yield('js')
 
-
 </body>
-
 
 </html>

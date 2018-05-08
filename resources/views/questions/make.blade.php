@@ -30,6 +30,7 @@
                                     </div>
                                 @endif
 
+
                                 @include('questions.select2')
                                 <br>
 
@@ -52,11 +53,8 @@
             </div>
         </div>
     </div>
-
-
-
-
 @endsection
+
 
 
 @section('js')
@@ -78,12 +76,12 @@ ue.execCommand('serverparam', '_token', '{{ csrf_token() }}'); // 设置 CSRF to
 });
 </script>
 
-
-
+<!-- 加载select2 -->
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 
+<!-- select2的组件 -->
 <script>
     $(document).ready(function () {
         function formatTopic(topic) {
