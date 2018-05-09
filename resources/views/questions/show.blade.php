@@ -3,8 +3,8 @@
 @section('content')
     @include('vendor.ueditor.assets')
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-1">
                 <div class="card">
                     <div class="card-header">
                         {{ $question->title }}
@@ -32,14 +32,23 @@
                     </div>
                 </div>
             </div>
-        </div>
 
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-header question-follow">
+                        <h3>{{ $question->followers_count }}</h3>
+                        <span>关注者</span>
+                    </div>
+                    <div class="card-body question-follow">
+                        <a href="/questions/{{ $question->id }}/follow" class="btn btn-primary">
+                            关注问题
+                        </a>
+                        <a href="#editor" class="btn btn-primary">回答</a>
+                    </div>
+                </div>
+            </div>
 
-
-
-
-        <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-md-8 col-md-offset-1">
                 <div class="card">
                     <div class="card-header">
                         {{ $question->answers_count }} 个回答
@@ -68,22 +77,26 @@
                         @endforeach
 
 
-                        <form action="/questions/{{ $question->id }}/answer" method="post">
-                            {{ csrf_field() }}
-                            <div class="form-group">
-                                <script id="container" style="height: 120px;" name="body" type="text/plain">
-                                    {!! old('body') !!}
-                                </script>
+                        @if(Auth::check())
+                            <form action="/questions/{{ $question->id }}/answer" method="post">
+                                {{ csrf_field() }}
+                                <div class="form-group">
+                                    <script id="container" style="height: 120px;" name="body" type="text/plain">
+                                        {!! old('body') !!}
+                                    </script>
 
-                                @if($errors->has('body'))
-                                <div class="alert alert-danger">
-                                    <strong>{{ $errors->first('body') }}</strong>
+                                    @if($errors->has('body'))
+                                    <div class="alert alert-danger">
+                                        <strong>{{ $errors->first('body') }}</strong>
+                                    </div>
+                                    @endif
+                                        <button class="btn btn-success pull-right" type="submit" style="float: right;">提交回答
+                                        </button>
                                 </div>
-                                @endif
-                                    <button class="btn btn-success pull-right" type="submit" style="float: right;">提交回答
-                                    </button>
-                            </div>
-                        </form>
+                            </form>
+                        @else
+                            <a href="{{ url('login') }}" class='btn btn-success btn-block'>登录后提交回答</a>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -97,6 +110,7 @@
 
 
 @section('js')
+    @if(Auth::check())
     <!-- 实例化编辑器 -->
     <script type="text/javascript">
         var ue = UE.getEditor('container', {
@@ -114,5 +128,6 @@
             ue.execCommand('serverparam', '_token', '{{ csrf_token() }}'); // 设置 CSRF token.
         });
     </script>
+    @endif
 @endsection
 
