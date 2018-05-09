@@ -1,6 +1,8 @@
 <?php
 
 use App\Article;
+use App\Follow;
+use App\Question;
 use Illuminate\Http\Request;
 
 /*
@@ -23,7 +25,6 @@ use Illuminate\Http\Request;
 // 留言板的路由 end ~~~~~~~~~~~~~~~
 
 
-
 // api_demo 的路由 start -----------------
 //Route::middleware('auth:api')->get('/user', function (Request $request) {
 //    return $request->user();
@@ -43,7 +44,29 @@ use Illuminate\Http\Request;
 // api_demo 的路由 end -----------------
 
 
-Route::get('/topics', function(Request $request) {
-    $topics = \App\Topic::select(['id', 'name'])->where('name', 'like', '%'.$request->query('q').'%')->get();
+Route::get('/topics', function (Request $request) {
+    $topics = \App\Topic::select(['id', 'name'])->where('name', 'like', '%' . $request->query('q') . '%')->get();
     return $topics;
 })->middleware('api');
+
+Route::post('/question/follower', function (Request $request) {
+    $user = Auth::guard('api')->user();
+    $followed = $user->followed($request->get('question'));
+    if ($followed) {
+        return response()->json(['followed' => true]);
+    }
+    return response()->json(['followed' => false]);
+})->middleware('auth:api');
+
+
+Route::post('/question/follow', function (Request $request) {
+    $user = Auth::guard('api')->user();
+    $question = Question::find($request->get('question'));
+    $followed = $user->followThis($question->id);
+    if (count($followed['detached']) > 0) {
+        $question->decrement('followers_count');
+        return response()->json(['followed' => false]);
+    }
+    $question->increment('followers_count');
+    return response()->json(['followed' => true]);
+})->middleware('auth:api');

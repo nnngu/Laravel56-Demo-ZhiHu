@@ -40,9 +40,13 @@
                         <span>关注者</span>
                     </div>
                     <div class="card-body question-follow">
-                        <a href="/questions/{{ $question->id }}/follow" class="btn btn-primary">
-                            关注问题
-                        </a>
+                        {{--<a href="/questions/{{ $question->id }}/follow" class="btn btn-primary {{ Auth::user()->followed($question->id) ? 'btn-success' : '' }}">--}}
+                            {{--{{ Auth::user()->followed($question->id) ? '已关注' : '关注此问题' }}--}}
+                        {{--</a>--}}
+                        <question-follow-button question="{{$question->id}}">
+
+                        </question-follow-button>
+
                         <a href="#editor" class="btn btn-primary">回答</a>
                     </div>
                 </div>
