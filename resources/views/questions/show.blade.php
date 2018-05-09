@@ -40,9 +40,7 @@
                         <span>关注者</span>
                     </div>
                     <div class="card-body question-follow">
-                        {{--<a href="/questions/{{ $question->id }}/follow" class="btn btn-primary {{ Auth::user()->followed($question->id) ? 'btn-success' : '' }}">--}}
-                            {{--{{ Auth::user()->followed($question->id) ? '已关注' : '关注此问题' }}--}}
-                        {{--</a>--}}
+
                         <question-follow-button question="{{$question->id}}">
 
                         </question-follow-button>
@@ -104,6 +102,57 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-header question-follow">
+                        <h5>关于作者</h5>
+                    </div>
+                    <div class="card-body question-follow">
+
+                        <div class="media">
+                            <div class="media-left">
+                                <a href="#">
+                                    <img width=36 src="{{ $question->user->avatar }}" alt="{{ $question->user->name }}">
+                                </a>
+                            </div>
+                            <div class="author_name" >
+                                <h5 class="media-heading">
+                                    <a href="">
+                                        {{ $question->user->name }}
+                                    </a>
+                                </h5>
+                            </div>
+                        </div>
+
+
+                        <div class="user-statics">
+                            <div class="statics-item text-center">
+                                <div class="statics-text">问题</div>
+                                <div class="statics-count">{{ $question->user->questions_count }}</div>
+                            </div>
+
+                            <div class="statics-item text-center">
+                                <div class="statics-text">回答</div>
+                                <div class="statics-count">{{ $question->user->answers_count }}</div>
+                            </div>
+
+                            <div class="statics-item text-center">
+                                <div class="statics-text">关注者</div>
+                                <div class="statics-count">{{ $question->user->followers_count }}</div>
+                            </div>
+                        </div>
+
+
+                        <question-follow-button question="{{$question->id}}">
+
+                        </question-follow-button>
+
+                        <a href="#editor" class="btn btn-primary">私信</a>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 @endsection

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddApiTokenToUsers extends Migration
+class CreateFollowersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class AddApiTokenToUsers extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('api_token', 64)->unique();
+        Schema::create('followers', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('follower_id')->unsigned()->index();
+            $table->integer('followed_id')->unsigned()->index();
+            $table->timestamps();
         });
     }
 
@@ -25,8 +28,6 @@ class AddApiTokenToUsers extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['api_token']);
-        });
+        Schema::dropIfExists('followers');
     }
 }

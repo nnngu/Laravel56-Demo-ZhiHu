@@ -53,7 +53,8 @@ a.topic:hover {
     margin-top: 20px;
 }
 .user-statics {
-    display: flex;
+    /*display: flex;*/
+    display: -webkit-box;
 }
 .statics-item {
     padding: 2px 20px;
@@ -90,4 +91,10 @@ a.topic:hover {
     border-radius: 2px;
     width: 30px;
     height: 30px;
+}
+
+.author_name {
+    margin-left: 15px;
+    padding-top: 10px;
+    display: block;
 }
