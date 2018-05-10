@@ -144,9 +144,9 @@
                         </div>
 
 
-                        <question-follow-button question="{{$question->id}}">
+                        <user-follow-button user="{{$question->user_id}}">
 
-                        </question-follow-button>
+                        </user-follow-button>
 
                         <a href="#editor" class="btn btn-primary">私信</a>
                     </div>

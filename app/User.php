@@ -80,8 +80,26 @@ class User extends Authenticatable
         return !! $this->follows()->where('question_id', $question)->count();
     }
 
+    /**
+     * 关注的人
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function followers()
     {
         return $this->belongsToMany(self::class, 'followers', 'follower_id', 'followed_id')->withTimestamps();
+    }
+
+    /**
+     * 粉丝列表
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function followersUser()
+    {
+        return $this->belongsToMany(self::class, 'followers', 'followed_id', 'follower_id')->withTimestamps();
+    }
+
+    public function followThisUser($user)
+    {
+        return $this->followers()->toggle($user);
     }
 }
