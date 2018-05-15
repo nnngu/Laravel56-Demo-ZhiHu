@@ -101,6 +101,9 @@ return [
     */
 
     'custom' => [
+        'name' => [
+            'unique' => '用户名已被使用',
+        ],
         'email' => [
             'unique' => '邮箱已被注册',
         ],

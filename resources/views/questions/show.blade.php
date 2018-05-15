@@ -65,6 +65,8 @@
                                     <a href="/user/{{ $answer->user->name }}">
                                         <img class="avatar_img" src="{{ $answer->user->avatar }}" alt="{{ $answer->user->name }}">
                                     </a>
+
+                                    <user-vote-button answer="{{ $answer->id }}" count="{{ $answer->votes_count }}"></user-vote-button>
                                 </div>
                                 <div class="media-body">
                                     <h6 class="media-heading">
